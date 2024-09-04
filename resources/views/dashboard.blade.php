@@ -13,7 +13,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div
                     class="bg-gray-200 dark:bg-gray-800 bg-opacity-25 p-6 lg:p-8">
-                    <x-tournament.bracket :$rounds />
+                    <x-tournament.bracket :$tournament />
                 </div>
             </div>
         </div>

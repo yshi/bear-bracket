@@ -19,11 +19,8 @@ class DashboardController extends Controller
             ->whereSlug('fat-bear-week-2023')
             ->first();
 
-        $matchHierarchy = $bearHierarchySvc->forTournament($tournament);
-
         return view('dashboard', [
-            'tournament' => $tournament,
-            'rounds' => $matchHierarchy->rounds,
+            'tournament' => $bearHierarchySvc->forTournament($tournament),
         ]);
     }
 }

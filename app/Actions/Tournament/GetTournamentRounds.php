@@ -48,7 +48,10 @@ class GetTournamentRounds
             );
         }
 
-        return new TournamentHierarchy($rounds->all());
+        return new TournamentHierarchy(
+            tournament: $tournament,
+            rounds: $rounds->all()
+        );
     }
 
     protected function initialMatches(Tournament $tournament): Collection

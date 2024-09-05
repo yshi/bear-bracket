@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'fat-bear-week-2023',
             'registration_opens_at' => Carbon::now()->subWeek(),
             'registration_closes_at' => Carbon::now()->addWeek(),
+            'order_index' => 5,
         ]);
 
         $bears = collect([

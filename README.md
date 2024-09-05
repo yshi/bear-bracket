@@ -8,4 +8,7 @@ This is PHP + an RDBMS. It's tested on Postgres, but there's no reason you can't
 composer install
 vi .env # configure the needfuls
 php artisan migrate --seed
+
+pnpm install
+pnpm build
 ```

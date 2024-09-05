@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Tournament\GetTournamentRounds;
 use App\Models\Tournament;
-use App\Models\TournamentMatch;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request, GetTournamentRounds $bearHierarchySvc)
+    public function __invoke(): RedirectResponse
     {
-        $tournament = Tournament::query()
-            ->with([
-                'matches.first_bear',
-                'matches.second_bear',
-            ])
-            ->whereSlug('fat-bear-week-2023')
-            ->first();
+        $tournament = Tournament::active()->first();
+        if (! $tournament) {
+            return redirect(route('help'));
+        }
 
-        return view('dashboard', [
-            'tournament' => $bearHierarchySvc->forTournament($tournament),
-        ]);
+        return redirect(route('tournament', $tournament));
     }
 }

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->datetime('registration_closes_at');
 
             $table->boolean('archived')->default(false);
+            $table->tinyInteger('order_index');
 
             $table->timestamps();
             $table->softDeletes();

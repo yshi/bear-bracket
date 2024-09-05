@@ -1,9 +1,9 @@
 @php
 /** @var \App\Actions\Tournament\Entity\TournamentHierarchy $tournament */
 @endphp
-<div class="grid grid-cols-1 lg:grid-cols-2 mb-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 pb-8 border-b-2">
     <div class="text-white">
-        <h2 class="text-5xl mb-4">{{ $tournament->tournament->label }}</h2>
+        <h2 class="text-4xl mb-4">todo username's bracket</h2>
         <p>Don't forget to vote daily &mdash; <em>in both matchups!</em> &mdash; at <a class="underline" target="_blank" href="https://fatbearweek.org">FatBearWeek.org</a>.</p>
     </div>
 

@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Actions\Tournament\Entity;
 
 use App\Models\Tournament;
+use App\Models\User;
 
-readonly class TournamentHierarchy
+readonly class RenderableBracket
 {
     /**
-     * @param Round[] $rounds
+     * @param RenderableRound[] $rounds
      */
     public function __construct(
+        public User $user,
         public Tournament $tournament,
         public array $rounds,
     )

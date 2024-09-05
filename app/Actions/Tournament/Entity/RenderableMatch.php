@@ -6,7 +6,7 @@ namespace App\Actions\Tournament\Entity;
 
 use App\Models\TournamentMatch;
 
-readonly class MatchData
+readonly class RenderableMatch
 {
     public function __construct(
         public TournamentMatch $match,

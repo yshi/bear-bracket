@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Tournament\GetTournamentRounds;
+use App\Actions\Tournament\GetBracketData;
 use App\Models\Tournament;
+use Illuminate\Http\Request;
 
 class BracketController extends Controller
 {
-    public function index(GetTournamentRounds $bearHierarchySvc, Tournament $tournament)
+    public function index(Request $request, GetBracketData $bearHierarchySvc, Tournament $tournament)
     {
         return view('bracket', [
-            'tournament' => $bearHierarchySvc->forTournament($tournament),
+            'bracket' => $bearHierarchySvc->forTournament($tournament, $request->user()),
         ]);
     }
 
-    public function show(GetTournamentRounds $bearHierarchySvc, Tournament $tournament, int $bracketId)
+    public function show(GetBracketData $bearHierarchySvc, Tournament $tournament, int $bracketId)
     {
         //
     }

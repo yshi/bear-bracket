@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions\Tournament\Entity;
 
-readonly class Round
+readonly class RenderableRound
 {
     /**
-     * @param MatchData[] $matches
+     * @param RenderableMatch[] $matches
      */
     public function __construct(
         public int $sequence,

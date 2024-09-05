@@ -18,7 +18,10 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @foreach ($tournaments as $tournament)
-                        <x-nav-link href="{{ route('tournament', $tournament) }}" :active="request()->routeIs('tournament', $tournament->slug)">
+                        @php
+                            $active = request()->is("tournament/{$tournament->slug}*");
+                        @endphp
+                        <x-nav-link href="{{ route('tournament', $tournament) }}" :$active>
                             {{ $tournament->label }}
                         </x-nav-link>
                     @endforeach
@@ -99,7 +102,10 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @foreach ($tournaments as $tournament)
-                <x-responsive-nav-link href="{{ route('tournament', $tournament) }}" :active="request()->routeIs('tournament', $tournament->slug)">
+                @php
+                    $active = request()->is("tournament/{$tournament->slug}*");
+                @endphp
+                <x-responsive-nav-link href="{{ route('tournament', $tournament) }}" :$active>
                     {{ $tournament->label }}
                 </x-responsive-nav-link>
             @endforeach

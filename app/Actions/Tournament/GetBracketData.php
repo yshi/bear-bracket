@@ -5,26 +5,27 @@ declare(strict_types=1);
 namespace App\Actions\Tournament;
 
 use App\Actions\Tournament\Entity\Bye;
-use App\Actions\Tournament\Entity\MatchData;
-use App\Actions\Tournament\Entity\Round;
+use App\Actions\Tournament\Entity\RenderableMatch;
+use App\Actions\Tournament\Entity\RenderableRound;
 use App\Actions\Tournament\Entity\Pairing;
-use App\Actions\Tournament\Entity\TournamentHierarchy;
+use App\Actions\Tournament\Entity\RenderableBracket;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
-class GetTournamentRounds
+class GetBracketData
 {
-    public function forTournament(Tournament $tournament): TournamentHierarchy
+    public function forTournament(Tournament $tournament, User $user): RenderableBracket
     {
         $matches = $this->initialMatches($tournament);
 
         $roundCounter = 1;
         $rounds = collect([
-            new Round(
+            new RenderableRound(
                 sequence: $roundCounter,
-                matches: $matches->map(fn (TournamentMatch $m) => new MatchData($m, false, false))->all(),
+                matches: $matches->map(fn (TournamentMatch $m) => new RenderableMatch($m, false, false))->all(),
             ),
         ]);
 
@@ -36,10 +37,10 @@ class GetTournamentRounds
                 break;
             }
 
-            $rounds[] = new Round(
+            $rounds[] = new RenderableRound(
                 sequence: $roundCounter,
                 matches: $matches->map(function (TournamentMatch $match) {
-                    return new MatchData(
+                    return new RenderableMatch(
                         $match,
                         $match->first_prior_match->is_bye,
                         $match->second_prior_match->is_bye
@@ -48,7 +49,8 @@ class GetTournamentRounds
             );
         }
 
-        return new TournamentHierarchy(
+        return new RenderableBracket(
+            user: $user,
             tournament: $tournament,
             rounds: $rounds->all()
         );

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <x-tournament.header :tournament="$bracket->tournament"/>
+        <x-tournament.header :$tournament/>
     </x-slot>
 
     <div class="py-12">
@@ -8,7 +8,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div
                     class="bg-gray-200 dark:bg-gray-800 bg-opacity-25 p-6 lg:p-8">
-                    <x-tournament.bracket :$bracket/>
+                    division scoreboard goes here
                 </div>
             </div>
         </div>

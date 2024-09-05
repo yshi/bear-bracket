@@ -1,10 +1,18 @@
+@props(['bracket'])
 @php
-/** @var \App\Actions\Tournament\Entity\TournamentHierarchy $tournament */
+    /** @var \App\Actions\Tournament\Entity\RenderableBracket $bracket */
 @endphp
 <div class="grid grid-cols-1 lg:grid-cols-2 pb-8 border-b-2">
     <div class="text-white">
-        <h2 class="text-4xl mb-4">todo username's bracket</h2>
-        <p>Don't forget to vote daily &mdash; <em>in both matchups!</em> &mdash; at <a class="underline" target="_blank" href="https://fatbearweek.org">FatBearWeek.org</a>.</p>
+        <div class="flex flex-row gap-4">
+            <div class="shrink-0">
+                <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="" />
+            </div>
+            <h2 class="text-4xl mb-4">{{ $bracket->user->name }}</h2>
+        </div>
+        <p>Don't forget to vote daily &mdash; <em>in both matchups!</em> &mdash; at <a class="underline" target="_blank"
+                                                                                       href="https://fatbearweek.org">FatBearWeek.org</a>.
+        </p>
     </div>
 
     <div class="flex flex-row justify-end gap-8 text-white">
@@ -25,28 +33,32 @@
     </div>
 </div>
 <div class="flex mr-3 mt-8">
-    @foreach ($tournament->rounds as $round)
-        <ol class="flex flex-1 flex-col justify-around mr-5 round @unless($loop->first) ml-5 @endunless" id="round-{{ $round->sequence }}">
+    @foreach ($bracket->rounds as $round)
+        <ol class="flex flex-1 flex-col justify-around mr-5 round @unless($loop->first) ml-5 @endunless"
+            id="round-{{ $round->sequence }}">
             @foreach ($round->matches as $matchData)
                 @unless ($matchData->match->is_bye)
                     @php
-                    $isWinner = function (?\App\Models\Bear $bear) use ($matchData): ?bool {
-                        if (! $matchData->match->winner) {
-                            return null;
-                        }
+                        $isWinner = function (?\App\Models\Bear $bear) use ($matchData): ?bool {
+                            if (! $matchData->match->winner) {
+                                return null;
+                            }
 
-                        return $matchData->match->winner->is($bear);
-                    };
+                            return $matchData->match->winner->is($bear);
+                        };
 
-                    $firstBearWon = $isWinner($matchData->match->first_bear);
-                    $secondBearWon = $isWinner($matchData->match->second_bear);
+                        $firstBearWon = $isWinner($matchData->match->first_bear);
+                        $secondBearWon = $isWinner($matchData->match->second_bear);
                     @endphp
 
-                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear" :fromBye="$matchData->firstBearFromBye" :winner="$firstBearWon"/>
-                    <x-tournament.pairing-slot :bear="$matchData->match->second_bear" :fromBye="$matchData->secondBearFromBye" :winner="$secondBearWon"/>
+                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear"
+                                               :fromBye="$matchData->firstBearFromBye" :winner="$firstBearWon"/>
+                    <x-tournament.pairing-slot :bear="$matchData->match->second_bear"
+                                               :fromBye="$matchData->secondBearFromBye" :winner="$secondBearWon"/>
                 @else
-                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear" :fromBye="$matchData->firstBearFromBye" :isBye="true"/>
-                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear" /> {{-- hidden by the CSS --}}
+                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear"
+                                               :fromBye="$matchData->firstBearFromBye" :isBye="true"/>
+                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear"/> {{-- hidden by the CSS --}}
                 @endif
             @endforeach
         </ol>

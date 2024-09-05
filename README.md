@@ -1,4 +1,4 @@
-# Fat Bear Week Tournament ![Yasashii Badge](https://cdn.godless-internets.org/image/yasashii_badge.png)
+# Fat Bear Week Tournament ![Yasashii Badge](./public/images/yasashii-badge.png)
 This is a March Madness-style tournament for Fat Bear Week. Compete against your friends to see who can score the most fat bear points.
 
 ## Developing

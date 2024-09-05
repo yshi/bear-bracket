@@ -29,6 +29,12 @@
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+            <div class="mt-4">
+                <x-label for="invite_code" value="{{ __('Invite Code') }}" />
+                <x-input id="invite_code" class="block mt-1 w-full" type="text" name="invite_code" :value="old('invite_code') ?? request()->input('invite_code')" required aria-describedby="divisionHelp" />
+                <small id="divisionHelp" class="block text-xs text-gray-700 dark:text-gray-300 mt-1 ml-1">Registering requires an invitation code from your division admin.</small>
+            </div>
+
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
                     <x-label for="terms">

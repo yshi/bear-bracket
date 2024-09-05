@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Bear;
+use App\Models\Division;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use App\Models\TournamentMatchProgression;
@@ -18,9 +19,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $division = Division::create([
+            'slug' => 'demo',
+            'invite_code' => 'demo',
+            'name' => 'The Demonstrators',
+        ]);
+
         User::factory()->create([
             'name' => 'owls',
             'email' => 'nick@godless-internets.org',
+            'division_id' => $division->id,
         ]);
 
         $this->fatBear2023();

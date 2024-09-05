@@ -81,6 +81,12 @@
                 @endif
             @endif
         </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="division" value="{{ __('Division') }}" />
+            <x-input id="division" type="text" class="mt-1 block w-full cursor-not-allowed" value="{{ $this->user->division->name }}" disabled aria-describedby="divisionHelp" />
+            <small id="divisionHelp" class="block text-xs text-gray-700 dark:text-gray-300 mt-2 ml-1">If you're not in the right division, contact <a href="mailto:nick@godless-internets.org" class="underline">the admin</a>.</small>
+        </div>
     </x-slot>
 
     <x-slot name="actions">

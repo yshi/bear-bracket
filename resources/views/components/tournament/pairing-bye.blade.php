@@ -1,4 +1,4 @@
 @props(['matchData'])
-<x-tournament.pairing-slot :bear="$matchData->match->first_bear"
+<x-tournament.pairing-slot :bear="$matchData->firstBear"
                            :fromBye="$matchData->firstBearFromBye" :isBye="true"/>
-<x-tournament.pairing-slot :bear="$matchData->match->first_bear"/> {{-- hidden by the CSS --}}
+<x-tournament.pairing-slot :bear="$matchData->firstBear"/> {{-- hidden by the CSS --}}

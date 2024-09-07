@@ -16,14 +16,14 @@ class BracketController extends Controller
         ]);
     }
 
-    public function edit(Request $request, GetBracketData $bearHierarchySvc, Tournament $tournament)
+    public function edit(Request $request, Tournament $tournament)
     {
         $user = $request->user();
 
         $bracket = $tournament->user_brackets()->whereBelongsTo($user)->first();
 
         if (! $bracket) {
-            $canCreateBracket = $user->can('create', UserBracket::class);;
+            $canCreateBracket = $user->can('create', [UserBracket::class, $tournament]);
 
             if (! $canCreateBracket) {
                 return view('closed', [
@@ -41,10 +41,10 @@ class BracketController extends Controller
         ]);
     }
 
-    public function show(GetBracketData $bearHierarchySvc, Tournament $tournament, int $bracketId)
+    public function show(GetBracketData $bracketService, Tournament $tournament, int $bracketId)
     {
         $bracket = $tournament->user_brackets()->findOrFail($bracketId);
-        $uiBracket = $bearHierarchySvc->forUser($bracket);
+        $uiBracket = $bracketService->forUser($bracket);
 
         return view('bracket.show', [
             'bracket' => $uiBracket,

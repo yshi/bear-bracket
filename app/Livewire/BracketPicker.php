@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Actions\Tournament\GetBracketData;
+use App\Models\Bear;
 use App\Models\UserBracket;
 use Livewire\Component;
 
@@ -12,25 +13,34 @@ class BracketPicker extends Component
 
     public function mount(UserBracket $bracket)
     {
-        $bracket->loadMissing([
-            'tournament.matches' => [
-                'first_prior_match',
-                'first_bear',
-                'second_prior_match',
-                'second_bear',
-                'winner',
-            ],
-        ]);
-
         $this->bracket = $bracket;
     }
 
-    public function render(GetBracketData $bearHierarchySvc)
+    public function render(GetBracketData $bracketService)
     {
-        $uiBracket = $bearHierarchySvc->forUser($this->bracket);
+        $uiBracket = $bracketService->forUser($this->bracket);
 
         return view('livewire.bracket-picker', [
             'uiBracket' => $uiBracket,
         ]);
+    }
+
+    public function pickWinner(GetBracketData $bracketService, int $matchId, int $bearId)
+    {
+        $match = $this->bracket->tournament->matches()->findOrFail($matchId);
+        $bear = Bear::findOrFail($bearId);
+
+        // @TODO: Validate the bear is valid for the match based on prior picks ...
+
+        $this->bracket->matches()->updateOrCreate(
+            attributes: [
+                'tournament_match_id' => $match->id,
+            ],
+            values: [
+                'selected_bear_id' => $bear->id,
+            ]
+        );
+
+        // @TODO: Unset future picks, if the bear is no longer valid
     }
 }

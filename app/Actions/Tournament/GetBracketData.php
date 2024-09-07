@@ -7,14 +7,17 @@ namespace App\Actions\Tournament;
 use App\Actions\Tournament\Entity\Bye;
 use App\Actions\Tournament\Entity\RenderableMatch;
 use App\Actions\Tournament\Entity\RenderableMatchPick;
+use App\Actions\Tournament\Entity\RenderablePickResult;
 use App\Actions\Tournament\Entity\RenderableRound;
 use App\Actions\Tournament\Entity\Pairing;
 use App\Actions\Tournament\Entity\RenderableBracket;
 use App\Actions\Tournament\Entity\RenderableUser;
+use App\Models\Bear;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use App\Models\User;
 use App\Models\UserBracket;
+use App\Models\UserBracketMatch;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -36,10 +39,39 @@ class GetBracketData
      */
     public function forUser(UserBracket $bracket): RenderableBracket
     {
+        $bracket->loadMissing([
+            'tournament.matches' => [
+                'first_prior_match',
+                'first_bear',
+                'second_prior_match',
+                'second_bear',
+                'winner',
+            ],
+            'matches.selected_bear',
+        ]);
+
         $rounds = $this->getRounds($bracket->tournament);
 
-        // TODO: Annotate RenderableMatch w/ RenderableMatchPick
-        // TODO: Get score/ranks
+        /** @var Collection<int, Bear> $userPicks */
+        $userPicks = $bracket->matches->mapWithKeys(function (UserBracketMatch $match) {
+           return [$match->tournament_match_id => $match->selected_bear];
+        });
+
+        $rounds = $rounds->map(function (RenderableRound $round) use ($userPicks) {
+            $matches = collect($round->matches)->map(function (RenderableMatch $match) use ($userPicks, $round) {
+                if ($match->match->is_bye) {
+                    return $match;
+                }
+
+                $match->firstBear = $userPicks->get($match->match->first_prior_match?->id, $match->firstBear);
+                $match->secondBear = $userPicks->get($match->match->second_prior_match?->id, $match->secondBear);
+
+                return $match;
+            });
+
+            $round->matches = $matches->all();
+            return $round;
+        });
 
         return new RenderableBracket(
             tournament: $bracket->tournament,
@@ -64,7 +96,7 @@ class GetBracketData
         $rounds = collect([
             new RenderableRound(
                 sequence: $roundCounter,
-                matches: $matches->map(fn (TournamentMatch $m) => new RenderableMatch($m, false, false))->all(),
+                matches: $matches->map(fn (TournamentMatch $m) => new RenderableMatch($m, $m->first_bear, $m->second_bear, false, false))->all(),
             ),
         ]);
 
@@ -81,8 +113,10 @@ class GetBracketData
                 matches: $matches->map(function (TournamentMatch $match) {
                     return new RenderableMatch(
                         $match,
+                        $match->first_bear,
+                        $match->second_bear,
                         $match->first_prior_match->is_bye,
-                        $match->second_prior_match->is_bye
+                        $match->second_prior_match->is_bye,
                     );
                 })->all(),
             );

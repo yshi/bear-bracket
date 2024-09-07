@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Tournament\Entity;
 
-use App\Models\Bear;
-
-readonly class RenderablePickResult
+readonly class RenderableMatchScore
 {
     public function __construct(
         public ?bool $scored,

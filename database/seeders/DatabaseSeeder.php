@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'owls',
             'email' => 'nick@godless-internets.org',
             'division_id' => $division->id,
+            'is_admin' => true,
         ]);
 
         $bears = $this->bears();

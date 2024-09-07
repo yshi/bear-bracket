@@ -29,6 +29,12 @@
                     <x-nav-link href="{{ route('help') }}" :active="request()->routeIs('help')">
                         Help
                     </x-nav-link>
+
+                    @can('admin-panel')
+                        <x-nav-link href="{{ route('filament.admin.pages.dashboard') }}" :active="request()->routeIs('filament')">
+                            Admin
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -112,6 +118,10 @@
 
             <x-responsive-nav-link href="{{ route('help') }}" :active="request()->routeIs('help')">
                 {{ __('Help') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link href="{{ route('filament.admin.pages.dashboard') }}" :active="request()->routeIs('filament')">
+                Admin
             </x-responsive-nav-link>
         </div>
 

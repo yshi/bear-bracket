@@ -38,6 +38,8 @@ return new class extends Migration
 
             $table->foreignId('division_id')->index();
 
+            $table->boolean('is_admin')->default(false);
+
             $table->timestamps();
         });
 

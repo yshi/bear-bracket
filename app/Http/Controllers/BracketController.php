@@ -20,19 +20,26 @@ class BracketController extends Controller
     {
         $user = $request->user();
 
+        /** @var UserBracket $bracket */
         $bracket = $tournament->user_brackets()->whereBelongsTo($user)->first();
 
         if (! $bracket) {
             $canCreateBracket = $user->can('create', [UserBracket::class, $tournament]);
 
             if (! $canCreateBracket) {
-                return view('closed', [
+                return view('bracket.registration-closed', [
                     'tournament' => $tournament,
                 ]);
             }
 
             $bracket = $tournament->user_brackets()->create([
                 'user_id' => $request->user()->id,
+            ]);
+        }
+
+        if (! $tournament->isOpenForPicks() && ! $bracket->completed_selections) {
+            return view('bracket.registration-closed', [
+                'tournament' => $tournament,
             ]);
         }
 
@@ -44,8 +51,11 @@ class BracketController extends Controller
 
     public function show(GetBracketData $bracketService, Tournament $tournament, int $bracketId)
     {
+        /** @var UserBracket $bracket */
         $bracket = $tournament->user_brackets()->findOrFail($bracketId);
         $uiBracket = $bracketService->forUser($bracket);
+
+        abort_unless($bracket->completed_selections, 404, 'Bracket incomplete');
 
         return view('bracket.show', [
             'bracket' => $uiBracket,

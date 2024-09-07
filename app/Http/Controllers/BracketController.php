@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Tournament\GetBracketData;
 use App\Models\Tournament;
+use App\Models\UserBracket;
 use Illuminate\Http\Request;
 
 class BracketController extends Controller
@@ -17,25 +18,26 @@ class BracketController extends Controller
 
     public function edit(Request $request, GetBracketData $bearHierarchySvc, Tournament $tournament)
     {
-        $userBracket = $tournament->user_brackets()->whereBelongsTo($request->user())->first();
+        $user = $request->user();
 
-        if (! $userBracket && ! $tournament->isOpenForPicks()) {
-            return view('closed', [
-                'tournament' => $tournament,
-            ]);
-        }
+        $userBracket = $tournament->user_brackets()->whereBelongsTo($user)->first();
 
         if (! $userBracket) {
+            $canCreateBracket = $user->can('create', UserBracket::class);;
+
+            if (! $canCreateBracket) {
+                return view('closed', [
+                    'tournament' => $tournament,
+                ]);
+            }
+
             $userBracket = $tournament->user_brackets()->create([
                 'user_id' => $request->user()->id,
             ]);
         }
 
+        // @TODO: This probably needs to go into a Livewire component
         $uiBracket = $bearHierarchySvc->forUser($tournament, $request->user());
-
-        // If you have a bracket: show it
-        // If this tournament is open for picks, initialize one & show
-        // Otherwise, show a "not open" screen
 
         return view('bracket', [
             'bracket' => $uiBracket,

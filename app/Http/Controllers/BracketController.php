@@ -11,12 +11,12 @@ class BracketController extends Controller
 {
     public function index(GetBracketData $bearHierarchySvc, Tournament $tournament)
     {
-        return view('bracket.show', [
+        return view('bracket.index', [
             'bracket' => $bearHierarchySvc->forTournament($tournament),
         ]);
     }
 
-    public function edit(Request $request, Tournament $tournament)
+    public function edit(Request $request, GetBracketData $bracketService, Tournament $tournament)
     {
         $user = $request->user();
 
@@ -38,6 +38,7 @@ class BracketController extends Controller
 
         return view('bracket.show-mine', [
             'bracket' => $bracket,
+            'uiBracket' => $bracketService->forUser($bracket),
         ]);
     }
 

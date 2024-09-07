@@ -11,7 +11,11 @@
                     @can('edit', $bracket)
                         <livewire:bracket-picker :$bracket />
                     @else
-                        <x-tournament.bracket :$bracket/>
+                        <x-tournament.bracket :bracket="$uiBracket">
+                            <x-slot:header>
+                                <x-tournament.header.player :player="$uiBracket->player" />
+                            </x-slot:header>
+                        </x-tournament.bracket>
                     @endcan
                 </div>
             </div>

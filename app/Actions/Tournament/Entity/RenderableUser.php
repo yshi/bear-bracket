@@ -10,6 +10,7 @@ readonly class RenderableUser
 {
     public function __construct(
         public User $user,
+        public int $remainingPredictions,
         public ?int $totalScore,
         public ?int $divisionRank,
         public ?int $overallRank,

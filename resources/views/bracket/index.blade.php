@@ -10,7 +10,7 @@
                     class="bg-gray-200 dark:bg-gray-800 bg-opacity-25 p-6 lg:p-8">
                     <x-tournament.bracket :$bracket>
                         <x-slot:header>
-                            <x-tournament.header.player :player="$bracket->player"/>
+                            <x-tournament.header.results/>
                         </x-slot:header>
                     </x-tournament.bracket>
                 </div>

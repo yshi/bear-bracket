@@ -57,8 +57,11 @@ class GetBracketData
            return [$match->tournament_match_id => $match->selected_bear];
         });
 
-        $rounds = $rounds->map(function (RenderableRound $round) use ($userPicks) {
-            $matches = collect($round->matches)->map(function (RenderableMatch $match) use ($userPicks, $round) {
+        $totalMatches = 0;
+        $totalPicks = 0;
+
+        $rounds = $rounds->map(function (RenderableRound $round) use ($userPicks, &$totalMatches, &$totalPicks) {
+            $matches = collect($round->matches)->map(function (RenderableMatch $match) use ($userPicks, $round, &$totalMatches, &$totalPicks) {
                 if ($match->match->is_bye) {
                     return $match;
                 }
@@ -67,6 +70,11 @@ class GetBracketData
                 $match->secondBear = $userPicks->get($match->match->second_prior_match?->id, $match->secondBear);
                 $match->pickedBear = $userPicks->get($match->match?->id);
 
+                $totalMatches += 1;
+                if ($match->pickedBear) {
+                    $totalPicks += 1;
+                }
+
                 return $match;
             });
 
@@ -74,11 +82,14 @@ class GetBracketData
             return $round;
         });
 
+
+
         return new RenderableBracket(
             tournament: $bracket->tournament,
             rounds: $rounds->all(),
             player: new RenderableUser(
                 user: $bracket->user,
+                remainingPredictions: $totalMatches - $totalPicks,
                 totalScore: null,
                 divisionRank: null,
                 overallRank: null,

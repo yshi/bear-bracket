@@ -21,7 +21,7 @@
                         @php
                             $active = request()->is("tournament/{$tournament->slug}*");
                         @endphp
-                        <x-nav-link href="{{ route('tournament', $tournament) }}" :$active>
+                        <x-nav-link href="{{ route('my-bracket', $tournament) }}" :$active>
                             {{ $tournament->label }}
                         </x-nav-link>
                     @endforeach

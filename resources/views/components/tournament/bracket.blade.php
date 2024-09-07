@@ -34,33 +34,6 @@
 </div>
 <div class="flex mr-3 mt-8">
     @foreach ($bracket->rounds as $round)
-        <ol class="flex flex-1 flex-col justify-around mr-5 round @unless($loop->first) ml-5 @endunless"
-            id="round-{{ $round->sequence }}">
-            @foreach ($round->matches as $matchData)
-                @unless ($matchData->match->is_bye)
-                    @php
-                        $isWinner = function (?\App\Models\Bear $bear) use ($matchData): ?bool {
-                            if (! $matchData->match->winner) {
-                                return null;
-                            }
-
-                            return $matchData->match->winner->is($bear);
-                        };
-
-                        $firstBearWon = $isWinner($matchData->match->first_bear);
-                        $secondBearWon = $isWinner($matchData->match->second_bear);
-                    @endphp
-
-                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear"
-                                               :fromBye="$matchData->firstBearFromBye" :winner="$firstBearWon"/>
-                    <x-tournament.pairing-slot :bear="$matchData->match->second_bear"
-                                               :fromBye="$matchData->secondBearFromBye" :winner="$secondBearWon"/>
-                @else
-                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear"
-                                               :fromBye="$matchData->firstBearFromBye" :isBye="true"/>
-                    <x-tournament.pairing-slot :bear="$matchData->match->first_bear"/> {{-- hidden by the CSS --}}
-                @endif
-            @endforeach
-        </ol>
+        <x-tournament.round :$round :class="$loop->first ? '' : 'ml-5'"/>
     @endforeach
 </div>

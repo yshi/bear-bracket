@@ -1,6 +1,10 @@
 @props(['matchData'])
 @php
-    $isWinner = function (?\App\Models\Bear $bear) use ($matchData): ?bool {
+    use App\Models\Bear;
+
+    /** @var \App\Actions\Tournament\Entity\RenderableMatch $matchData */
+
+    $isWinner = function (?Bear $bear) use ($matchData): ?bool {
         if (! $matchData->match->winner) {
             return null;
         }
@@ -8,8 +12,19 @@
         return $matchData->match->winner->is($bear);
     };
 
+    $isPick = function (?Bear $slotBear, ?Bear $pickedBear): ?bool {
+        if ($slotBear === null || $pickedBear === null) {
+            return null;
+        }
+
+        return $pickedBear->is($slotBear);
+    };
+
     $firstBearWon = $isWinner($matchData->firstBear);
+    $firstBearPicked = $isPick($matchData->firstBear, $matchData->pickedBear);
+
     $secondBearWon = $isWinner($matchData->secondBear);
+    $secondBearPicked = $isPick($matchData->secondBear, $matchData->pickedBear);
 
     $firstBearClick = '';
     $secondBearClick = '';
@@ -24,10 +39,14 @@
 <x-tournament.pairing-slot :bear="$matchData->firstBear"
                            :fromBye="$matchData->firstBearFromBye"
                            :winner="$firstBearWon"
+                           :pick="$firstBearPicked"
+                           :$readyForPick
                            x-on:click="{{ $firstBearClick }}"
 />
 <x-tournament.pairing-slot :bear="$matchData->secondBear"
                            :fromBye="$matchData->secondBearFromBye"
                            :winner="$secondBearWon"
+                           :pick="$secondBearPicked"
+                           :$readyForPick
                            x-on:click="{{ $secondBearClick }}"
 />

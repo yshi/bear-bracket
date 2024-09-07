@@ -65,6 +65,7 @@ class GetBracketData
 
                 $match->firstBear = $userPicks->get($match->match->first_prior_match?->id, $match->firstBear);
                 $match->secondBear = $userPicks->get($match->match->second_prior_match?->id, $match->secondBear);
+                $match->pickedBear = $userPicks->get($match->match?->id);
 
                 return $match;
             });

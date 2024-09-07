@@ -9,6 +9,7 @@ use App\Models\Bear;
 readonly class RenderableMatchPickSlot
 {
     public function __construct(
+        public bool $prerequisiteMatchesPicked,
         public array $possibleBears,
         public ?Bear $pick = null,
     ) {

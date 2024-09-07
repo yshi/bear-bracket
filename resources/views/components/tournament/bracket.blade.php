@@ -1,4 +1,7 @@
-@props(['bracket'])
+@props([
+    'bracket',
+    'canPick' => false,
+])
 @php
     /** @var \App\Actions\Tournament\Entity\RenderableBracket $bracket */
 @endphp
@@ -58,6 +61,6 @@
 </div>
 <div class="flex mr-3 mt-8">
     @foreach ($bracket->rounds as $round)
-        <x-tournament.round :$round :class="$loop->first ? '' : 'ml-5'"/>
+        <x-tournament.round :$round :class="$loop->first ? '' : 'ml-5'" :$canPick />
     @endforeach
 </div>

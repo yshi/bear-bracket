@@ -1,4 +1,7 @@
-@props(['matchData'])
+@props([
+    'matchData',
+    'canPick' => false,
+])
 @php
     use App\Models\Bear;
 
@@ -30,7 +33,7 @@
     $secondBearClick = '';
 
     $readyForPick = $matchData->firstBear && $matchData->secondBear;
-    if ($readyForPick) {
+    if ($readyForPick && $canPick) {
         $firstBearClick = "\$wire.pickWinner({$matchData->match->id}, {$matchData->firstBear->id})";
         $secondBearClick = "\$wire.pickWinner({$matchData->match->id}, {$matchData->secondBear->id})";
     }
@@ -41,12 +44,16 @@
                            :winner="$firstBearWon"
                            :pick="$firstBearPicked"
                            :$readyForPick
-                           x-on:click="{{ $firstBearClick }}"
+                           :$canPick
+                           @click="{{ $firstBearClick }}"
+                           @keyup.enter="{{ $firstBearClick }}"
 />
 <x-tournament.pairing-slot :bear="$matchData->secondBear"
                            :fromBye="$matchData->secondBearFromBye"
                            :winner="$secondBearWon"
                            :pick="$secondBearPicked"
                            :$readyForPick
-                           x-on:click="{{ $secondBearClick }}"
+                           :$canPick
+                           @click="{{ $secondBearClick }}"
+                           @keyup.enter="{{ $secondBearClick }}"
 />

@@ -14,6 +14,7 @@ use App\Actions\Tournament\Entity\RenderableUser;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use App\Models\User;
+use App\Models\UserBracket;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -33,18 +34,18 @@ class GetBracketData
     /**
      * Gets a user's picks, with information about whether they were right
      */
-    public function forUser(Tournament $tournament, User $user): RenderableBracket
+    public function forUser(UserBracket $bracket): RenderableBracket
     {
-        $rounds = $this->getRounds($tournament);
+        $rounds = $this->getRounds($bracket->tournament);
 
         // TODO: Annotate RenderableMatch w/ RenderableMatchPick
         // TODO: Get score/ranks
 
         return new RenderableBracket(
-            tournament: $tournament,
+            tournament: $bracket->tournament,
             rounds: $rounds->all(),
-            user: new RenderableUser(
-                user: $user,
+            player: new RenderableUser(
+                user: $bracket->user,
                 totalScore: null,
                 divisionRank: null,
                 overallRank: null,

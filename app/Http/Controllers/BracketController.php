@@ -11,7 +11,7 @@ class BracketController extends Controller
 {
     public function index(GetBracketData $bearHierarchySvc, Tournament $tournament)
     {
-        return view('bracket', [
+        return view('bracket.show', [
             'bracket' => $bearHierarchySvc->forTournament($tournament),
         ]);
     }
@@ -20,9 +20,9 @@ class BracketController extends Controller
     {
         $user = $request->user();
 
-        $userBracket = $tournament->user_brackets()->whereBelongsTo($user)->first();
+        $bracket = $tournament->user_brackets()->whereBelongsTo($user)->first();
 
-        if (! $userBracket) {
+        if (! $bracket) {
             $canCreateBracket = $user->can('create', UserBracket::class);;
 
             if (! $canCreateBracket) {
@@ -31,25 +31,22 @@ class BracketController extends Controller
                 ]);
             }
 
-            $userBracket = $tournament->user_brackets()->create([
+            $bracket = $tournament->user_brackets()->create([
                 'user_id' => $request->user()->id,
             ]);
         }
 
-        // @TODO: This probably needs to go into a Livewire component
-        $uiBracket = $bearHierarchySvc->forUser($tournament, $request->user());
-
-        return view('bracket', [
-            'bracket' => $uiBracket,
+        return view('bracket.show-mine', [
+            'bracket' => $bracket,
         ]);
     }
 
     public function show(GetBracketData $bearHierarchySvc, Tournament $tournament, int $bracketId)
     {
-        $userBracket = $tournament->user_brackets()->findOrFail($bracketId);
-        $uiBracket = $bearHierarchySvc->forUser($tournament, $userBracket->user);
+        $bracket = $tournament->user_brackets()->findOrFail($bracketId);
+        $uiBracket = $bearHierarchySvc->forUser($bracket);
 
-        return view('bracket', [
+        return view('bracket.show', [
             'bracket' => $uiBracket,
         ]);
     }

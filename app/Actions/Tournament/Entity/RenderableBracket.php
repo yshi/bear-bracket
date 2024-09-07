@@ -15,7 +15,7 @@ readonly class RenderableBracket
     public function __construct(
         public Tournament $tournament,
         public array $rounds,
-        public ?RenderableUser $user = null,
+        public ?RenderableUser $player = null,
     )
     {
         //

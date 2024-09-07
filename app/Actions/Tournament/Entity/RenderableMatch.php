@@ -6,12 +6,13 @@ namespace App\Actions\Tournament\Entity;
 
 use App\Models\TournamentMatch;
 
-readonly class RenderableMatch
+class RenderableMatch
 {
     public function __construct(
-        public TournamentMatch $match,
-        public bool $firstBearFromBye,
-        public bool $secondBearFromBye,
+        readonly public TournamentMatch $match,
+        readonly public bool $firstBearFromBye,
+        readonly public bool $secondBearFromBye,
+        public ?RenderableMatchPick $pick = null,
     ) {
         //
     }

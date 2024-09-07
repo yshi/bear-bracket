@@ -4,7 +4,8 @@
         {{ $tournament->label }}
     </h2>
 
-    <x-nav-link href="{{ route('tournament', $tournament->slug) }}" :active="request()->routeIs('tournament', $tournament->slug)">My Bracket</x-nav-link>
+    <x-nav-link href="{{ route('my-bracket', $tournament->slug) }}" :active="request()->routeIs('my-bracket', $tournament->slug)">My Bracket</x-nav-link>
     <x-nav-link href="{{ route('scoreboard.division', [$tournament->slug, auth()->user()->division]) }}" :active="request()->routeIs('scoreboard.division')">Division Scoreboard</x-nav-link>
     <x-nav-link href="{{ route('scoreboard.overall', $tournament->slug) }}" :active="request()->routeIs('scoreboard.overall')">Global Scoreboard</x-nav-link>
+    <x-nav-link href="{{ route('tournament', $tournament->slug) }}" :active="request()->routeIs('tournament', $tournament->slug)">Results</x-nav-link>
 </div>

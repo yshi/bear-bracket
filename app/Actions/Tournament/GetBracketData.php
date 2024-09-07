@@ -6,9 +6,11 @@ namespace App\Actions\Tournament;
 
 use App\Actions\Tournament\Entity\Bye;
 use App\Actions\Tournament\Entity\RenderableMatch;
+use App\Actions\Tournament\Entity\RenderableMatchPick;
 use App\Actions\Tournament\Entity\RenderableRound;
 use App\Actions\Tournament\Entity\Pairing;
 use App\Actions\Tournament\Entity\RenderableBracket;
+use App\Actions\Tournament\Entity\RenderableUser;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use App\Models\User;
@@ -17,7 +19,43 @@ use Illuminate\Support\Collection;
 
 class GetBracketData
 {
-    public function forTournament(Tournament $tournament, User $user): RenderableBracket
+    /**
+     * Gets the official results for the tournament
+     */
+    public function forTournament(Tournament $tournament): RenderableBracket
+    {
+        return new RenderableBracket(
+            tournament: $tournament,
+            rounds: $this->getRounds($tournament)->all(),
+        );
+    }
+
+    /**
+     * Gets a user's picks, with information about whether they were right
+     */
+    public function forUser(Tournament $tournament, User $user): RenderableBracket
+    {
+        $rounds = $this->getRounds($tournament);
+
+        // TODO: Annotate RenderableMatch w/ RenderableMatchPick
+        // TODO: Get score/ranks
+
+        return new RenderableBracket(
+            tournament: $tournament,
+            rounds: $rounds->all(),
+            user: new RenderableUser(
+                user: $user,
+                totalScore: null,
+                divisionRank: null,
+                overallRank: null,
+            )
+        );
+    }
+
+    /**
+     * @return Collection<RenderableRound>
+     */
+    protected function getRounds(Tournament $tournament): Collection
     {
         $matches = $this->initialMatches($tournament);
 
@@ -49,18 +87,21 @@ class GetBracketData
             );
         }
 
-        return new RenderableBracket(
-            user: $user,
-            tournament: $tournament,
-            rounds: $rounds->all()
-        );
+        return $rounds;
     }
 
+    /**
+     * @return Collection<TournamentMatch>
+     */
     protected function initialMatches(Tournament $tournament): Collection
     {
         return $this->roundMatches($tournament, priorMatches: null);
     }
 
+    /**
+     * @param Collection<TournamentMatch>|null $priorMatches
+     * @return Collection<TournamentMatch>
+     */
     protected function roundMatches(Tournament $tournament, ?Collection $priorMatches): Collection
     {
         $query = $tournament->matches()

@@ -2,8 +2,13 @@
 
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
+    if ($request->user()) {
+        return redirect(route('dashboard'));
+    }
+
     return view('welcome');
 });
 

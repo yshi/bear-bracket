@@ -14,6 +14,6 @@ class DashboardController extends Controller
             return redirect(route('help'));
         }
 
-        return redirect(route('tournament', $tournament));
+        return redirect(route('my-bracket', $tournament));
     }
 }

@@ -97,6 +97,27 @@ class GetBracketData
         );
     }
 
+    public function subsequentMatches(TournamentMatch $match): Collection
+    {
+        $allMatches = collect();
+
+        $subsequentMatches = TournamentMatch::query()
+            ->where(function (Builder $query) use ($match) {
+                $query->whereBelongsTo($match, 'first_prior_match')
+                    ->orWhereBelongsTo($match, 'second_prior_match');
+            })
+            ->get()
+            ->collect()
+            ->values();
+
+        foreach ($subsequentMatches as $subsequentMatch) {
+            $allMatches->add($subsequentMatch);
+            $allMatches = $allMatches->concat($this->subsequentMatches($subsequentMatch)->all());
+        }
+
+        return $allMatches;
+    }
+
     /**
      * @return Collection<RenderableRound>
      */

@@ -7,8 +7,8 @@
 
             <div class="w-full sm:max-w-2xl mt-6 p-6 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg prose dark:prose-invert">
                 <div class="text-center">
-                    <h1>Bear Brackets</h1>
-                    <p>Welcome to Bear Brackets at <code>deercrime.org</code>.</p>
+                    <h1>Fat Bear Madness</h1>
+                    <p>Welcome to Fat Bear Madness at <code>deercrime.org</code>.</p>
                     <p>Please log in to begin.</p>
                 </div>
 

@@ -31,7 +31,8 @@ class TournamentResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
                 Forms\Components\DateTimePicker::make('registration_opens_at')
                     ->required(),
                 Forms\Components\DateTimePicker::make('registration_closes_at')

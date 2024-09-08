@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         @php /** @var \App\Models\UserBracket $row */ @endphp
-        @foreach($leaderboard as $row)
+        @forelse ($leaderboard as $row)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="px-3 py-4">
                     <img
@@ -29,7 +29,13 @@
                 <td class="px-3 py-4 tabular-nums text-right">{{ $row->score }}</td>
                 <td class="px-3 py-4 tabular-nums text-right">{{ $row->ranking }}</td>
             </tr>
-        @endforeach
+        @empty
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td class="px-3 py-4 text-center text-lg" colspan="5">
+                    <em>Nobody is on the scoreboard yet!</em>
+                </td>
+            </tr>
+        @endforelse
         </tbody>
     </table>
 </div>

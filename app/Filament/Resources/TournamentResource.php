@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Actions\Tournament\CacheScores;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Tournament;
@@ -85,6 +86,12 @@ class TournamentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('scoreCacheUpdate')
+                    ->label('Update Score Cache')
+                    ->icon('heroicon-o-arrow-path')
+                    ->action(function (CacheScores $cacheSvc, Tournament $tournament) {
+                        $cacheSvc->forTournament($tournament);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Actions\Tournament\CacheScores;
 use App\Models\Bear;
 use App\Models\Division;
 use App\Models\Tournament;
@@ -9,7 +10,9 @@ use App\Models\TournamentMatch;
 use App\Models\TournamentMatchProgression;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\UserBracket;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -35,8 +38,54 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $bears = $this->bears();
-        $this->fatBear2023($bears);
+        $fbw2023 = $this->fatBear2023($bears);
+        $this->generateBrackets($fbw2023);
+
         $this->fatBear2024($bears);
+    }
+
+    private function generateBrackets(Tournament $tournament): void
+    {
+        $divisions = Division::factory()
+            ->state(new Sequence(
+                ['name' => "Envoy's Alliance"],
+                ['name' => 'Grand Archive'],
+                ['name' => 'Horizon Hunters'],
+                ['name' => 'Radiant Oath'],
+                ['name' => 'Verdant Wheel'],
+            ))
+            ->count(5)
+            ->create()
+            ->add(Division::find(1))
+            ->map(fn (Division $d) => ['division_id' => $d->id])
+            ->all();
+
+        /** @var Collection<TournamentMatch> $nonByes */
+        $nonByes = $tournament->matches()->where('is_bye', false)->get();
+
+        User::factory()
+            ->state(new Sequence(...$divisions))
+            ->count(200)
+            ->afterCreating(function (User $user) use ($tournament, $nonByes) {
+                /** @var UserBracket $bracket */
+                $bracket = $tournament->user_brackets()->create([
+                    'user_id' => $user->id,
+                    'completed_selections' => true,
+                ]);
+
+                $picks = [];
+                foreach ($nonByes as $match) {
+                    $picks[] = [
+                        'tournament_match_id' => $match->id,
+                        'selected_bear_id' => Arr::random([$match->first_bear_id, $match->second_bear_id]),
+                    ];
+                }
+
+                $bracket->matches()->createMany($picks);
+            })
+            ->create();
+
+        app(CacheScores::class)->forTournament($tournament);
     }
 
     private function bears(): Collection

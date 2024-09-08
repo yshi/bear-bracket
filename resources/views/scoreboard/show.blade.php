@@ -13,7 +13,7 @@
                         <div class="text-white">
                             <div class="flex flex-row gap-4">
                                 <div class="shrink-0">
-                                    <h2 class="text-4xl mb-4">{{ $division->name }} Leaderboard</h2>
+                                    <h2 class="text-4xl mb-4">{{ $division->name }} Scoreboard</h2>
                                 </div>
                             </div>
                             <p>See how you're doing compared to your friends.</p>

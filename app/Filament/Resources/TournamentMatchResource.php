@@ -87,7 +87,7 @@ class TournamentMatchResource extends Resource
                 Tables\Columns\TextColumn::make('second_bear.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('winning_bear.name')
+                Tables\Columns\TextColumn::make('winner.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('first_prior_tournament_match_id')
                     ->label('1st Prior Match')

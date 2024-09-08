@@ -59,7 +59,7 @@
                     <p>I am not sure how well this works for a small tournament. We'll see!</p>
 
                     <h2 id="is-this-open-source">Is this open source?</h2>
-                    <p>Sort of. The software is developed by <a href="https://yshi.org" class="underline">Yasashii Heavy Industries</a> and published on GitHub at <a href="https://github.com/yshi/bear-brackets" target="_blank"><code>yshi/bear-brackets</code></a>.</p>
+                    <p>Sort of. The software is developed by <a href="https://yshi.org" class="underline">Yasashii Heavy Industries</a> and published on GitHub at <a href="https://github.com/yshi/bear-bracket" target="_blank"><code>yshi/bear-brackets</code></a>.</p>
                     <p>Feel free to run your own instance of Fat Bear Madness.</p>
 
                     <h2 id="i-have-another-problem">I have another problem!</h2>

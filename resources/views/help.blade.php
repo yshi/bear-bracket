@@ -46,22 +46,12 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach(app(\App\Actions\Tournament\Scoring\ScoringTableInterface::class)->table() as $round => $points)
                             <tr>
-                                <td>1</td>
-                                <td>1</td>
+                                <td>{{ $round }}</td>
+                                <td>{{ $points }}</td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>8</td>
-                            </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

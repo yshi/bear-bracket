@@ -7,11 +7,13 @@ namespace App\Actions\Tournament;
 use App\Actions\Tournament\Entity\Bye;
 use App\Actions\Tournament\Entity\RenderableMatch;
 use App\Actions\Tournament\Entity\RenderableMatchPick;
+use App\Actions\Tournament\Entity\RenderableMatchScore;
 use App\Actions\Tournament\Entity\RenderablePickResult;
 use App\Actions\Tournament\Entity\RenderableRound;
 use App\Actions\Tournament\Entity\Pairing;
 use App\Actions\Tournament\Entity\RenderableBracket;
 use App\Actions\Tournament\Entity\RenderableUser;
+use App\Actions\Tournament\Scoring\ScoringTableInterface;
 use App\Models\Bear;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
@@ -23,6 +25,12 @@ use Illuminate\Support\Collection;
 
 class GetBracketData
 {
+    public function __construct(
+        protected ScoringTableInterface $scoringTable,
+    ) {
+        //
+    }
+
     /**
      * Gets the official results for the tournament
      */
@@ -59,9 +67,10 @@ class GetBracketData
 
         $totalMatches = 0;
         $totalPicks = 0;
+        $totalScore = 0;
 
-        $rounds = $rounds->map(function (RenderableRound $round) use ($userPicks, &$totalMatches, &$totalPicks) {
-            $matches = collect($round->matches)->map(function (RenderableMatch $match) use ($userPicks, $round, &$totalMatches, &$totalPicks) {
+        $rounds = $rounds->map(function (RenderableRound $round) use ($userPicks, &$totalMatches, &$totalPicks, &$totalScore) {
+            $matches = collect($round->matches)->map(function (RenderableMatch $match) use ($userPicks, $round, &$totalMatches, &$totalPicks, &$totalScore) {
                 if ($match->match->is_bye) {
                     return $match;
                 }
@@ -69,6 +78,20 @@ class GetBracketData
                 $match->firstBear = $userPicks->get($match->match->first_prior_match?->id, $match->firstBear);
                 $match->secondBear = $userPicks->get($match->match->second_prior_match?->id, $match->secondBear);
                 $match->pickedBear = $userPicks->get($match->match?->id);
+
+                if ($match->match->winner) {
+                    $scored = $match->match->winner->is($match->pickedBear);
+                    $points = $scored
+                        ? $this->scoringTable->score($round->sequence)
+                        : 0;
+
+                    $totalScore += $points;
+
+                    $match->score = new RenderableMatchScore(
+                        scored: $scored,
+                        pointsScored: $points,
+                    );
+                }
 
                 $totalMatches += 1;
                 if ($match->pickedBear) {
@@ -82,15 +105,13 @@ class GetBracketData
             return $round;
         });
 
-
-
         return new RenderableBracket(
             tournament: $bracket->tournament,
             rounds: $rounds->all(),
             player: new RenderableUser(
                 user: $bracket->user,
                 remainingPredictions: $totalMatches - $totalPicks,
-                totalScore: null,
+                totalScore: $totalScore,
                 divisionRank: null,
                 overallRank: null,
             )

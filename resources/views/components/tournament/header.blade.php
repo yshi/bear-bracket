@@ -1,6 +1,6 @@
 @props(['tournament'])
 <div class="flex flex-row gap-8">
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight hidden md:block">
         {{ $tournament->label }}
     </h2>
 

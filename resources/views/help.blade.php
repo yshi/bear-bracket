@@ -37,7 +37,7 @@
                     <p>This works like March Madness: correct picks net you points based on what round the match was in.
                         Correct picks later in the tournament are worth more points.</p>
 
-                    <div class="w-1/2">
+                    <div class="w-full md:w-1/2">
                         <table>
                             <thead>
                             <tr>

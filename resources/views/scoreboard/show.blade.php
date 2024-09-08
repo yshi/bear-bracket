@@ -10,29 +10,26 @@
                     class="bg-gray-200 dark:bg-gray-800 bg-opacity-25 p-6 lg:p-8">
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 pb-8 border-b-2 mb-8">
-                        <div class="text-white">
+                        <div class="text-gray-600 dark:text-gray-400">
                             <div class="flex flex-row gap-4">
-                                <div class="shrink-0">
-                                    <h2 class="text-4xl mb-4">{{ $division->name }} Scoreboard</h2>
-                                </div>
+                                <h2 class="text-4xl mb-4">{{ $division->name }} Scoreboard</h2>
                             </div>
                             <p>See how you're doing compared to your friends.</p>
                         </div>
 
-                        <div class="flex flex-row justify-end gap-8 text-white">
-                            <div class="w-40 text-right bg-gray-700 px-4 py-2 rounded shadow-xl flex flex-col justify-around">
-                                <div class="text-4xl flex justify-end">
-                                    @unless ($ranking === null)
-                                        {{ $ranking }}
-                                    @else
-                                        &ndash;
-                                    @endunless
-                                </div>
-                                <span class="text-gray-300">
+                        <x-tournament.stat.deck>
+                            <x-tournament.stat.card>
+                                @unless ($ranking === null)
+                                    {{ $ranking }}
+                                @else
+                                    &ndash;
+                                @endunless
+
+                                <x-slot:label>
                                     Your Rank
-                                </span>
-                            </div>
-                        </div>
+                                </x-slot:label>
+                            </x-tournament.stat.card>
+                        </x-tournament.stat.deck>
                     </div>
 
                     @include('scoreboard._table')

@@ -1,4 +1,4 @@
-<div class="text-white">
+<div class="text-gray-600 dark:text-gray-400">
     <div class="flex flex-row gap-4">
         <h2 class="text-4xl mb-4">Results</h2>
     </div>

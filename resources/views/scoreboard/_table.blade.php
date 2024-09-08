@@ -6,7 +6,7 @@
                 <span class="sr-only">Avatar</span>
             </th>
             <th scope="col" class="p-4">Player</th>
-            <th scope="col" class="p-4">Division</th>
+            <th scope="col" class="p-4 hidden md:table-cell">Division</th>
             <th scope="col" class="p-4 text-right">Score</th>
             <th scope="col" class="p-4 text-right">Rank</th>
         </tr>
@@ -25,7 +25,7 @@
                 <td class="px-3 py-4">
                     <a href="{{ route('bracket', [$tournament, $row]) }}" class="underline">{{ $row->user->name }}</a>
                 </td>
-                <td class="px-3 py-4">{{ $row->user->division->name }}</td>
+                <td class="px-3 py-4 hidden md:table-cell">{{ $row->user->division->name }}</td>
                 <td class="px-3 py-4 tabular-nums text-right">{{ $row->score }}</td>
                 <td class="px-3 py-4 tabular-nums text-right">{{ $row->ranking }}</td>
             </tr>

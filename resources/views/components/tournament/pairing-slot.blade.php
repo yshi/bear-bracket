@@ -59,15 +59,17 @@
             @endif
         @endif
     </span>
-    @if ($bear)
-        {{ $bear->name }}
+    <div class="text-nowrap min-w-28 w-full pr-4 mr-4 lg:mr-0 flex justify-between">
+        @if ($bear)
+            {{ $bear->name }}
 
-        @if ($winner === true && $score)
-            <span class="ml-auto mr-4">+{{ $score->pointsScored }}</span>
+            @if ($winner === true && $score)
+                <span>+{{ $score->pointsScored }}</span>
+            @endif
+        @else
+            <small class="italic">pending results!</small>
         @endif
-    @else
-        <small class="italic">pending results!</small>
-    @endif
+    </div>
 
     @if ($winner === true)
         <span class="sr-only">Won</span>

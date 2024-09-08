@@ -14,7 +14,7 @@
     position: absolute;
     left: calc(100% + 0.5rem); /* participant size (includes margin) */
     width: 1.25rem; /* round margin-right */
-    border: 2px solid #e2e8f0;
+    border: 2px solid #94a3b8;
     border-left: none;
 }
 
@@ -66,7 +66,18 @@
     left: -1.75rem; /* competitor margin + current width */
     top: 50%;
     width: 1.25rem; /* round margin-left */
-    border-top: 2px solid #e2e8f0;
+    border-top: 2px solid #94a3b8;
+}
+
+@media(prefers-color-scheme: dark) {
+    .round + .round .with-connector:before {
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .with-connector:after {
+        border: 2px solid #e2e8f0;
+        border-left: none;
+    }
 }
 /*
   Byes

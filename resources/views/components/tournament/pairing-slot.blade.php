@@ -6,6 +6,7 @@
     'pick' => null,
     'canPick' => false,
     'readyForPick' => false,
+    'score' => null,
 ])
 @php
     $showPickHighlight = $canPick && $readyForPick && $pick === null;
@@ -60,6 +61,10 @@
     </span>
     @if ($bear)
         {{ $bear->name }}
+
+        @if ($winner === true && $score)
+            <span class="ml-auto mr-4">+{{ $score->pointsScored }}</span>
+        @endif
     @else
         <small class="italic">pending results!</small>
     @endif

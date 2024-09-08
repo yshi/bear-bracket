@@ -45,6 +45,7 @@
                            :pick="$firstBearPicked"
                            :$readyForPick
                            :$canPick
+                           :score="$matchData->score"
                            @click="{{ $firstBearClick }}"
                            @keyup.enter="{{ $firstBearClick }}"
 />
@@ -54,6 +55,7 @@
                            :pick="$secondBearPicked"
                            :$readyForPick
                            :$canPick
+                           :score="$matchData->score"
                            @click="{{ $secondBearClick }}"
                            @keyup.enter="{{ $secondBearClick }}"
 />

@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
 class GetBracketData
 {
     public function __construct(
+        protected Leaderboard $leaderboardSvc,
         protected ScoringTableInterface $scoringTable,
     ) {
         //
@@ -112,8 +113,8 @@ class GetBracketData
                 user: $bracket->user,
                 remainingPredictions: $totalMatches - $totalPicks,
                 totalScore: $totalScore,
-                divisionRank: null,
-                overallRank: null,
+                divisionRank: $this->leaderboardSvc->divisionRankFor($bracket->tournament, $bracket->user->division, $bracket->user),
+                overallRank: $this->leaderboardSvc->overallRankFor($bracket->tournament, $bracket->user),
             )
         );
     }

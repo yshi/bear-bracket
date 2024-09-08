@@ -197,9 +197,9 @@ class DatabaseSeeder extends Seeder
             'thurByeB' => [8, '2023-10-05', $bears['435'], null, null],
 
             'friA' => [9, '2023-10-06', $bears['806 Jr'], $bears['32'], $bears['32']],
-            'friB' => [10, '2023-10-06', $bears['480'], $bears['901'], $bears['901']],
+            'friB' => [10, '2023-10-06', $bears['901'], $bears['480'], $bears['901']],
 
-            'satA' => [11, '2023-10-07', $bears['747'], $bears['128'], $bears['128']],
+            'satA' => [11, '2023-10-07', $bears['128'], $bears['747'], $bears['128']],
             'satB' => [12, '2023-10-07', $bears['164'], $bears['435'], $bears['435']],
 
             'monA' => [13, '2023-10-09', $bears['32'], $bears['901'], $bears['32']],

@@ -17,8 +17,10 @@
         'm-2',
         'p-1',
         'leading-relaxed',
-        'bg-gray-600',
-        'text-gray-300',
+        'text-gray-700' => $winner === null,
+        'bg-gray-300' => $winner === null,
+        'dark:bg-gray-600' => $winner === null,
+        'dark:text-gray-300' => $winner === null,
         'rounded-full',
         'relative',
         'with-connector',
@@ -26,6 +28,7 @@
         'ease-in-out',
         'from-bye' => $fromBye,
         'with-bye' => $isBye,
+        'text-gray-300' => $winner !== null,
         'bg-green-900' => $winner === true,
         'bg-red-900' => $winner === false,
         'ring-2 ring-amber-500' => $showPickHighlight,
@@ -34,7 +37,7 @@
     ];
 @endphp
 <li {{ $attributes->class($liClasses) }} {{ $attributes }} @if($canPick && $bear) tabindex="1" @endif>
-    <span class="w-6 h-6 ml-1 mr-3 bg-gray-300 rounded-full flex justify-center items-center">
+    <span class="w-6 h-6 ml-1 mr-3 bg-gray-100 dark:bg-gray-300 rounded-full flex justify-center items-center">
         @if($canPick)
             @if ($bear)
                 @if ($pick === true)

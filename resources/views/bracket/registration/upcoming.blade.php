@@ -23,7 +23,7 @@
                             >
                                 {{ $tournament->registration_opens_at->toDayDateTimeString() }}
                             </time>
-                            to pick your bears!
+                            to pick your bears, and keep an eye on <a href="https://fatbearweek.org" class="underline" target="_blank">FatBearWeek.org</a> for updates!
                         </p>
                     </div>
                 </div>

@@ -12,6 +12,11 @@ Route::get('/', function (Request $request) {
     return view('welcome');
 });
 
+Route::get('favicon.svg', function () {
+    return response(\Illuminate\Support\Facades\Blade::render('<x-application-mark />'))
+        ->header('Content-Type', 'image/svg+xml');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

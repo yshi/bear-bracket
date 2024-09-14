@@ -6,6 +6,7 @@ use App\Actions\Tournament\GetBracketData;
 use App\Models\Tournament;
 use App\Models\UserBracket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class BracketController extends Controller
 {
@@ -27,7 +28,12 @@ class BracketController extends Controller
             $canCreateBracket = $user->can('create', [UserBracket::class, $tournament]);
 
             if (! $canCreateBracket) {
-                return view('bracket.registration-closed', [
+                $notOpenView = 'bracket.registration.closed';
+                if (Carbon::now()->isBefore($tournament->registration_opens_at)) {
+                    $notOpenView = 'bracket.registration.upcoming';
+                }
+
+                return view($notOpenView, [
                     'tournament' => $tournament,
                 ]);
             }
@@ -38,7 +44,7 @@ class BracketController extends Controller
         }
 
         if (! $tournament->isOpenForPicks() && ! $bracket->completed_selections) {
-            return view('bracket.registration-closed', [
+            return view('bracket.registration.closed', [
                 'tournament' => $tournament,
             ]);
         }

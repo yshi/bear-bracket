@@ -12,16 +12,13 @@ class FatBearJr2024 extends Seeder
 {
     public function run(): void
     {
-        throw new \Exception('TODO: Finalize me before running!');
-
         $tournament = $this->tournament();
         $bears = $this->bears();
 
-        // @TODO: Dates are right, but this is NOT FINAL -- I just threw the bears in so I could validate the hierarchy!
         $matches = collect([
             // Date, Bear A, Bear B, bye flag
-            'thursA' => [1, '2024-09-26', $bears['806-spring-cub'], $bears['901-spring-cub'], false],
-            'thursB' => [2, '2024-09-26', $bears['909-junior'], $bears['910-yearling'], false],
+            'thursA' => [1, '2024-09-26', $bears['909-junior'], $bears['806-junior'], false],
+            'thursB' => [2, '2024-09-26', $bears['910-junior'], $bears['128-spring-cub'], false],
 
             'fri' => [3, '2024-09-27', null, null, false],
         ])->mapWithKeys(function (array $data, string $key) use ($tournament) {
@@ -62,12 +59,11 @@ class FatBearJr2024 extends Seeder
 
     private function bears(): Collection
     {
-        // @TODO: Not final, these are the 2023 cubs!
         return collect([
-            '806 Spring Cub',
-            '901 Spring Cub',
+            '806 Junior',
+            '128 Spring Cub',
             '909 Junior',
-            '910 Yearling',
+            '910 Junior',
         ])->mapWithKeys(function (string $name) {
             $slug = Str::slug($name);
 

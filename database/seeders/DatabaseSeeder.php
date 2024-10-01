@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $fbw2023 = $this->fatBear2023($bears);
         $this->generateBrackets($fbw2023);
 
-        $this->fatBear2024($bears);
+        // $this->fatBear2024($bears);
     }
 
     private function generateBrackets(Tournament $tournament): void
